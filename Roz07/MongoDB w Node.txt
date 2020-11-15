@@ -1,0 +1,24 @@
+npm init
+npm install mongodb --save
+
+//mongoose
+
+
+////////////////
+
+    todosCollection.updateOne({        
+        _id: mongo.ObjectID(id),    
+    }, {        
+        $set: {            
+            done: true,        
+        },
+    }, err => {
+        if (err) {
+            console.log('Błąd podczas ustawiania zakończenia!', err);
+        } else {
+            console.log('Zadanie oznaczone jako zakończone');
+        }
+        client.close();
+    });
+
+////////////////

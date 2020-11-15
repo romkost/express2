@@ -1,0 +1,63 @@
+
+
+////////////////////
+
+npm install express --save
+npm install express-generator -g
+//Express application generator
+
+//cookie-session = do przechowywania sesji po stronie serwera
+npm install -s cookie-session
+
+// wpisujemy jaki będziemy używać szablon
+express --view=pug ./
+npm install
+
+SET DEBUG=roz08:*
+npm start
+
+npm install -g nodemon
+//nodemon ./server.js localhost 3000
+nodemon .\bin\www
+
+/////////////////////pug
+
+doctype html
+mixin item(title, url)
+  li
+    a(href=url)=title
+
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    ul
+      li
+        a(href="/") Strona główna
+    block content
+
+
+//////////////////////////
+
+1. wejdź na https://mongodb.com
+i wybierz "Try free" 
+admin / MongoDB2020
+
+//mongodb+srv://admin:<password>@cluster0.5kloe.mongodb.net/<dbname>?retryWrites=true&w=majority
+//mongodb+srv://admin:MongoDB2020@cluster0.5kloe.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+
+npm install mongoose
+mongoosejs.com/docs/index.html
+//////////////////////////
+
+
+  if errors._message  !== undefined
+    each _message in errors._message
+      p=_message
+
+
+  if errors.errors !== undefined
+    each message in errors.errors
+      p=message

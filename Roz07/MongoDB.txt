@@ -1,0 +1,148 @@
+$ cd "C:\Program Files\MongoDB\Server\4.4\bin"
+$ mongo
+// Tworzenie bazy i dodawanie 1 elementu - w jednej linii
+> db.cars.insertOne({brand: 'Daewoo', model: 'Lanos'}) [enter]
+
+// dodawanie 1 elementu/dokumentu - w wielu liniach
+> db.cars.insertOne({ [enter]
+... brand: 'Daewoo',  [enter]
+... model: 'Nubira',  [enter]
+... });               [enter]
+
+
+//dodawanie wielu dokumentów
+> db.cars.insertMany([{brand: 'Polonez', model: 'Caro'}, {brand: 'Polonez', model: 'Caro Plus'}]) [enter]
+
+//wyszukiwanie, wyświetlanie wszystkich dokumentow
+>db.cars.find() [enter]
+
+> db.cars.insertOne({brand: 'Jaguar', model: 'X-Type'}) [enter]
+
+//nowa kolekcja
+>db.clients.insertMany({
+... active: true,
+... name: 'Anna Kowalska',
+... age: 45,
+... }, {
+... active: false,
+... name: 'Jan Kowalski'',
+... age: 25,
+... }]);
+
+>db.clients.find()
+
+//wyszukiwanie konkretne
+> db.clients.find({active: true})
+> db.clients.find({name: 'Anna Kowalska'})
+> db.clients.find({_id: '5fad037461dcf9dbe68d818e'}) //NIE ZADZIAŁA
+> db.clients.find({_id: ObjectId('5fad037461dcf9dbe68d818e')})
+
+//Wyszukiwane wieku (age) większego niż (gt) 30
+> db.clients.find({age: {$gt:30}})
+
+//Wyszukiwane wieku (age) mniejszego niż (gt) 30
+> db.clients.find({age: {$lt:30}})
+
+//Wyszukiwane wieku (age) kilka kryteriów
+> db.clients.find({age: {$gt:30, $lt: 50}})
+
+> db.clients.find({age: {$gt:25}})
+//GTE = >=
+> db.clients.find({age: {$gte:25}})
+
+//Jest w bazie?
+> db.clients.find({age: {$in: [25, 31, 99]}})
+> db.clients.find({age: {$in: [45, 31, 99]}})
+> db.clients.find({age: {$in: [25, 45]}})
+
+//nin = not in = wykluczenie
+> db.clients.find({age: {$nin: [25, 31, 99]}})
+
+//oba warunki jednocześnie spełnione
+> db.clients.find({age: {$gt: 25}, active: true})
+
+//zastosowanie or=LUB
+> db.clients.find({$or: [{age: {$gte:25}}, {active: true}]})
+> db.clients.find({$or: [{age: {$gte:25}}, {active: false}]})
+> db.clients.find({$or: [{age: {$lt:35}}, {active: true}]})
+
+//NOT
+> db.clients.find({age: {$not: {$gt: 30}}})
+
+
+CRUD
+Create Read Update Delete
+
+//chcę znaleźć wszystkie dokumenty
+> db.clients.update({}, {co chcemy zmienic})
+//zmieniam wszystko na active: true
+> db.clients.update({}, {active: true}) //usunęły się pozostałe dane
+
+> db.clients.find()
+> db.clients.update({_id: ObjectId('5fad037461dcf9dbe68d818e')}, {active: true, name: 'Anna Kowalska', age: 45})
+
+//Zamiast
+> db.clients.update({}, {active: true})
+//aktualizuje tylko przerwszy znaleziony
+> db.clients.update({}, {$set: {age: 26}})
+
+//zaktualizuj wszystkie pasujące {multi: true}
+> db.clients.update({}, {$set: {active: true}}, {multi: true})
+
+> db.clients.update({age: {$lt: 30}}, {$set: {active: false}}, {multi: true})
+> db.clients.updateOne ....
+> db.clients.updateMany .....
+
+// db.clients.insertOne({active: true, name: 'Anna Kowalska', age: 45})
+
+//DELETE
+> db.clients.delete()
+> db.clients.deleteOne({_id: ObjectId('5fad037461dcf9dbe68d818e')})>
+> db.clients.deleteMany({active: false})
+
+//22 minuta
+
+
+function deleteTask(todosCollection, id) {
+    todosCollection.find({
+        _id: mongo.ObjectID(id),
+    }).toArray((err, todos) => {
+        if (err) {
+            console.log('Błąd podczas pobierania!', err);
+        } else if (todos.length !== 1) {
+            console.log('Nie ma takiego zadania!');
+            client.close();
+        } else {
+            todosCollection.deleteOne({        
+                _id: mongo.ObjectID(id),    
+            }, err => {
+                if (err) {
+                    console.log('Błąd podczas usuwania!', err);
+                } else {
+                    console.log('Zadanie usunięte');
+                }
+                client.close();
+            });
+        }
+    });
+
+}
+
+////////////////////////////////////////////
+
+function deleteAllDoneTasks(todosCollection) {
+    todosCollection.deleteMany({        
+        done: true,   
+    }, err => {
+        if (err) {
+            console.log('Błąd podczas usuwania!', err);
+        } else {
+            console.log('Wyczyszczono zakończone zadania');
+        }
+        client.close();
+            });
+        }
+    });
+}
+
+////////////////////////////////////////////

@@ -1,0 +1,1 @@
+alert("JS z script.js");

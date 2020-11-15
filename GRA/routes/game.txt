@@ -1,0 +1,12 @@
+
+    if (question.correctAnswer === Number(index)) {
+        res.json({
+            correct: true,
+        });
+    } else {
+        res.json({
+            correct: false,        
+    })
+}
+
+///Math.floor --> ~~
